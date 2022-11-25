@@ -17,3 +17,20 @@ exports.postNote = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.getNotes = async (req, res, next) => {
+  try {
+    const notes = await Note.find();
+    if (!notes) {
+      const error = new Error('Unable to fetch Note');
+      error.status = 422;
+      throw error;
+    }
+    res.status(200).json({ message: 'Notes Fetched Successfully', notes });
+  } catch (err) {
+    if (!err.status) {
+      err.status = 500;
+    }
+    next(err);
+  }
+};
