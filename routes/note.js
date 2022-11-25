@@ -1,8 +1,8 @@
 const express = require('express');
 
 const router = express.Router();
-const postController = require('../controller/note');
+const noteController = require('../controller/note');
 
-router.post('', postController.postNote);
+router.post('', noteController.postNote);
 
 module.exports = router;
