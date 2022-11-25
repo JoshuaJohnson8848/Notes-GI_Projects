@@ -1,10 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 
 const app = express();
 
 dotenv.config({ path: './config/.env' });
+
+app.use(express.json());
+app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
