@@ -9,6 +9,11 @@ exports.postNote = async (req, res, next) => {
       body: body,
     });
     const createdNote = await note.save();
+    if (!createdNote) {
+      const error = new Error('Note Creation Failed');
+      error.status = 422;
+      throw error;
+    }
     res.status(200).json({ message: 'Note Created', note: createdNote });
   } catch (err) {
     if (!err.status) {
