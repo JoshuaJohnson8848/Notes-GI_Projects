@@ -85,3 +85,21 @@ exports.update = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.deleteById = async (req, res, next) => {
+  const noteId = req.params.id;
+  try {
+    const deleteNote = await Note.findByIdAndRemove(noteId);
+    if (!deleteNote) {
+      const error = new Error('Note Deletion Failed');
+      error.status = 422;
+      throw error;
+    }
+    res.status(200).json({ message: 'Note Deleted Successfully' });
+  } catch (err) {
+    if (!err.status) {
+      err.status = 500;
+    }
+    next(err);
+  }
+};
