@@ -24,6 +24,14 @@ const noteRoute = require('./routes/note');
 
 app.use('/api/v1/notes', noteRoute);
 
+app.use((error, req, res, next) => {
+  const status = error.status || 500;
+  const data = error.data;
+  const message = error.message;
+  res.status(status).json({ message: message, data: data });
+  next();
+});
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then((result) => {
