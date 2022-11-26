@@ -39,3 +39,21 @@ exports.getNotes = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.getNoteById = async (req, res, next) => {
+  const noteId = req.params.id;
+  try {
+    const note = await Note.findById(noteId);
+    if (!note) {
+      const error = new Error('Note Not Found');
+      error.status = 422;
+      throw error;
+    }
+    res.status(200).json({ message: 'Note Fechted Succesfully', note });
+  } catch (err) {
+    if (!err.status) {
+      err.status = 500;
+    }
+    next(err);
+  }
+};
