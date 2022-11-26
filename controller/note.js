@@ -57,3 +57,31 @@ exports.getById = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.update = async (req, res, next) => {
+  const noteId = req.params.id;
+  const title = req.body.title;
+  const body = req.body.body;
+  try {
+    const existingNote = await Note.findById(noteId);
+    if (!existingNote) {
+      const error = new Error('Note Not Found');
+      error.status = 422;
+      throw error;
+    }
+    existingNote.title = title;
+    existingNote.body = body;
+    const updateNote = await existingNote.save();
+    if (!updateNote) {
+      const error = new Error('Note Updation Failed');
+      error.status = 422;
+      throw error;
+    }
+    res.status(200).json({ message: 'Note Updated', note: updateNote });
+  } catch (err) {
+    if (!err.status) {
+      err.status = 500;
+    }
+    next(err);
+  }
+};
